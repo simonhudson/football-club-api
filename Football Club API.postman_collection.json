@@ -17,14 +17,9 @@
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
-							"pm.test('Response should contain metatdata', () => {\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
 							"    const res = pm.response.json();\r",
 							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain result count in metatdata', () => {\r",
-							"    const res = pm.response.json();\r",
 							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
 							"});\r",
 							"\r",
@@ -69,14 +64,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/players/",
+					"raw": "localhost:3000/players/captain",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"players",
-						""
+						"captain"
 					]
 				}
 			},
@@ -89,6 +84,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.equal(1);\r",
+							"});\r",
+							"\r",
 							"pm.test('Response should contain one result with is_captain property set to true', () => {\r",
 							"    const res = pm.response.json();\r",
 							"    pm.expect(res).haveOwnProperty('data');\r",
@@ -125,6 +130,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.equal(1);\r",
+							"});\r",
+							"\r",
 							"pm.test('Response should contain one result with is_vice_captain property set to true', () => {\r",
 							"    const res = pm.response.json();\r",
 							"    pm.expect(res).haveOwnProperty('data');\r",

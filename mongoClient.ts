@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-const { MongoClient } = require('mongodb');
-const dotenv = require('dotenv');
+import { MongoClient } from 'mongodb';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const uri = process.env.DB_URI;
@@ -17,4 +17,4 @@ try {
 	process.exit();
 }
 
-module.exports = mongoClient;
+export default mongoClient;

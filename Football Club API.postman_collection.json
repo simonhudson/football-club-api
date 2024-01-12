@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "85b0495c-0cb1-4fb9-9eb6-3c28e073b1eb",
+		"name": "Football Club API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30596518"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/players/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain metatdata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain result count in metatdata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain results array', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"});\r",
+							"\r",
+							"pm.test('Results should contain expected data', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    const firstItem = res.data[0];\r",
+							"\r",
+							"    const properties = [\r",
+							"        { key: '_id', type: 'string' },\r",
+							"        { key: 'first_name', type: 'string' },\r",
+							"        { key: 'last_name', type: 'string' },\r",
+							"        { key: 'date_of_birth', type: 'string' },\r",
+							"        { key: 'squad_number', type: 'number' },\r",
+							"        { key: 'position', type: 'string' },\r",
+							"        { key: 'nationality', type: 'string' },\r",
+							"        { key: 'slug', type: 'string' },\r",
+							"        { key: 'is_captain', type: 'boolean' },\r",
+							"        { key: 'is_vice_captain', type: 'boolean' },\r",
+							"        { key: 'on_loan_from', type: 'string' },\r",
+							"        { key: 'on_loan_to', type: 'string' }\r",
+							"    ]\r",
+							"\r",
+							"    properties.forEach(property => {\r",
+							"        pm.expect(firstItem).haveOwnProperty(property.key);\r",
+							"        const value = firstItem[property.key];\r",
+							"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+							"    });\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/players/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"players",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/players/captain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response should contain one result with is_captain property set to true', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"    pm.expect(res.data.length).to.equal(1);\r",
+							"    pm.expect(res.data[0].is_captain).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/players/captain",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"players",
+						"captain"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/players/vicecaptain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response should contain one result with is_vice_captain property set to true', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"    pm.expect(res.data.length).to.equal(1);\r",
+							"    pm.expect(res.data[0].is_vice_captain).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/players/vicecaptain",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"players",
+						"vicecaptain"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

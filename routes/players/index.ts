@@ -56,4 +56,4 @@ router.get('/loan/out', async (req, res) => {
 	sendResponsePayload(response, res);
 });
 
-module.exports = router;
+export default router;

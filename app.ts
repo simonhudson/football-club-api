@@ -1,10 +1,9 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 app.use(express.json());
-
-const players = require('./routes/players');
-
 const PORT = process.env.PORT || 3000;
+
+import players from './routes/players';
 
 app.use('/players', players);
 

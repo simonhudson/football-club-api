@@ -4,7 +4,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 import players from './routes/players';
-
+app.get('/', (_, res) => res.send('Hello World!'));
 app.use('/players', players);
 
 app.listen(PORT, () => console.log('Server Listening on PORT:', PORT));

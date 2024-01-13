@@ -1,4 +1,4 @@
-export interface PersonApiResponse {
+export interface PersonBase {
 	_id: string;
 	date_of_birth?: string;
 	first_name: string;
@@ -7,6 +7,6 @@ export interface PersonApiResponse {
 	slug: string;
 }
 
-export interface Person extends PersonApiResponse {
+export interface Person extends PersonBase {
 	age?: number;
 }

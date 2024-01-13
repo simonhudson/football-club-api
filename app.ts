@@ -8,3 +8,5 @@ import players from './routes/players';
 app.use('/players', players);
 
 app.listen(PORT, () => console.log('Server Listening on PORT:', PORT));
+
+module.exports = app;

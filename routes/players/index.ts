@@ -2,14 +2,17 @@ import express, { Request, Response } from 'express';
 const router = express.Router();
 import mongoClient from '../../mongoClient';
 import { sendResponsePayload } from '../../helpers/api';
+import { mutatePerson } from '../../mutate/person';
+import { WithId } from 'mongodb';
 
 const COLLECTION_NAME = 'players';
 
 const makeRequest = async (res: Response, query = {}) => {
-	const client = await mongoClient;
+	const client = mongoClient;
 	const db = client.db(process.env.DB_NAME);
-	const response = await db.collection(COLLECTION_NAME).find(query).sort({ last_name: 1 }).toArray();
-	sendResponsePayload(response, res);
+	const response: WithId<any>[] = await db.collection(COLLECTION_NAME).find(query).sort({ last_name: 1 }).toArray();
+	const mutated: WithId<any>[] = mutatePerson(response);
+	sendResponsePayload(mutated, res);
 };
 
 router.get('/', async (_: Request, res: Response) => makeRequest(res));

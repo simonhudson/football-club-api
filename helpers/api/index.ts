@@ -1,11 +1,18 @@
+import { Response } from 'express';
 import { httpStatusCodes } from '../../constants/httpStatusCodes';
 import type { WithId } from 'mongodb';
 
-export const sendResponsePayload = (response: WithId<any>[], res) => {
-	const responsePayload = {
+interface ResponsePayload {
+	status: number;
+	metadata: { count: number };
+	data: WithId<any>[];
+}
+
+export const sendResponsePayload = (response: WithId<any>[], res: Response) => {
+	const responsePayload: ResponsePayload = {
 		status: httpStatusCodes.OK,
 		metadata: { count: response.length },
 		data: response,
 	};
-	return res.json(responsePayload);
+	return res.send(responsePayload);
 };

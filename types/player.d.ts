@@ -1,4 +1,4 @@
-import type { Person } from '@/types/person.d';
+import type { Person } from './person.d';
 
 export interface Player extends Person {
 	is_captain: boolean;

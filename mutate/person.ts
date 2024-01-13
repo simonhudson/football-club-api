@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 import { WithId } from 'mongodb';
 
 export const mutatePerson = (data: WithId<any>[]): WithId<any>[] => {

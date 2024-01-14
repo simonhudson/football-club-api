@@ -8,7 +8,7 @@ const sendResponsePayload = (response, res) => {
 	};
 	res.setHeader('Content-Type', 'application/json');
 	res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-	res.send(responsePayload);
+	res.json(responsePayload);
 };
 
 module.exports = { sendResponsePayload };

@@ -1,5 +1,5 @@
 const express = require('express');
-const players = require('./routes/players');
+const players = require('./api/players');
 
 const app = express();
 app.use(express.json());

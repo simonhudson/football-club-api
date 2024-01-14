@@ -1,5 +1,10 @@
 # Football Club API
 
+## Built with
+- Node.js
+- Express.js
+- MongoDB
+
 ## Available endpoints
 
 -   [`/players`](https://football-club-api.vercel.app/players) returns all players, ordered by `last_name` in ascending order

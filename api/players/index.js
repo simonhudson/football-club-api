@@ -15,7 +15,6 @@ const makeRequest = async (res, query = {}) => {
 };
 
 router.get('/', async (_req, res) => makeRequest(res));
-router.get('/:slug', async (req, res) => makeRequest(res, { slug: req.params.slug }));
 router.get('/captain', async (_req, res) => makeRequest(res, { is_captain: true }));
 router.get('/vicecaptain', async (_req, res) => makeRequest(res, { is_vice_captain: true }));
 router.get('/loan', async (_req, res) =>
@@ -23,5 +22,6 @@ router.get('/loan', async (_req, res) =>
 );
 router.get('/loan/in', async (_req, res) => makeRequest(res, { on_loan_from: { $ne: null } }));
 router.get('/loan/out', async (_req, res) => makeRequest(res, { on_loan_to: { $ne: null } }));
+router.get('/:slug', async (req, res) => makeRequest(res, { slug: req.params.slug })); // Keep this :slug route last to allow for other routes to be hit
 
 module.exports = router;

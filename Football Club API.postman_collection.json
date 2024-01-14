@@ -64,13 +64,85 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{API_URI}}/players/loan",
+					"raw": "{{API_URI}}/players",
+					"host": [
+						"{{API_URI}}"
+					],
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/players/:slug",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain results array', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"    pm.expect(res.data.length).to.equal(1);\r",
+							"});\r",
+							"\r",
+							"pm.test('Results should contain expected data', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    const result = res.data[0];\r",
+							"\r",
+							"    const properties = [\r",
+							"        { key: '_id', type: 'string' },\r",
+							"        { key: 'first_name', type: 'string' },\r",
+							"        { key: 'last_name', type: 'string' },\r",
+							"        { key: 'date_of_birth', type: 'string' },\r",
+							"        { key: 'squad_number', type: 'number' },\r",
+							"        { key: 'position', type: 'string' },\r",
+							"        { key: 'nationality', type: 'string' },\r",
+							"        { key: 'slug', type: 'string' },\r",
+							"        { key: 'is_captain', type: 'boolean' },\r",
+							"        { key: 'is_vice_captain', type: 'boolean' },\r",
+							"        { key: 'on_loan_from', type: 'string' },\r",
+							"        { key: 'on_loan_to', type: 'string' }\r",
+							"    ]\r",
+							"\r",
+							"    properties.forEach(property => {\r",
+							"        pm.expect(result).haveOwnProperty(property.key);\r",
+							"        const value = result[property.key];\r",
+							"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+							"    });\r",
+							"\r",
+							"    pm.expect(result.slug).to.equal('james-collins');\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URI}}/players/james-collins",
 					"host": [
 						"{{API_URI}}"
 					],
 					"path": [
 						"players",
-						"loan"
+						"james-collins"
 					]
 				}
 			},
@@ -354,6 +426,11 @@
 		{
 			"key": "API_URI",
 			"value": "https://football-club-api.vercel.app",
+			"type": "string"
+		},
+		{
+			"key": "LOCAL_URI",
+			"value": "https://localhost:3000",
 			"type": "string"
 		}
 	]

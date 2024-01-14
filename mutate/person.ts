@@ -1,10 +1,9 @@
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
+import { WithId } from 'mongodb';
 
-const mutatePerson = (data) => {
+export const mutatePerson = (data: WithId<any>[]) => {
 	data.forEach((person) => {
 		if (person.date_of_birth) person.age = dayjs().diff(dayjs(person.date_of_birth), 'year');
 	});
 	return data;
 };
-
-module.exports = { mutatePerson };

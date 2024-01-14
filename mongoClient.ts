@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-const { MongoClient } = require('mongodb');
-const dotenv = require('dotenv');
+import { MongoClient } from 'mongodb';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const uri = process.env.DB_URI;
 if (!uri) throw new Error('No DB_URI in .env file');
 
-let mongoClient;
+let mongoClient: MongoClient;
 try {
 	mongoClient = new MongoClient(uri);
 	console.log('Connecting to MongoDB Atlas cluster...');
@@ -17,4 +17,4 @@ try {
 	process.exit();
 }
 
-module.exports = mongoClient;
+export default mongoClient;

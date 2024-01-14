@@ -1,5 +1,5 @@
-const express = require('express');
-const players = require('./api/players');
+import express from 'express';
+import players from './api/players';
 
 const app = express();
 app.use(express.json());
@@ -9,4 +9,4 @@ app.listen(PORT, () => console.log('Server Listening on PORT:', PORT));
 
 app.use('/players', players);
 
-module.exports = app;
+export default app;

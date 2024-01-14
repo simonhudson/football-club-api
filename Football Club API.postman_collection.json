@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "localhost:3000/players/",
+			"name": "/players",
 			"event": [
 				{
 					"listen": "test",
@@ -64,21 +64,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/players/captain",
+					"raw": "{{API_URI}}/players/loan",
 					"host": [
-						"localhost"
+						"{{API_URI}}"
 					],
-					"port": "3000",
 					"path": [
 						"players",
-						"captain"
+						"loan"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:3000/players/captain",
+			"name": "/players/captain",
 			"event": [
 				{
 					"listen": "test",
@@ -110,11 +109,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/players/captain",
+					"raw": "{{API_URI}}/players/captain",
 					"host": [
-						"localhost"
+						"{{API_URI}}"
 					],
-					"port": "3000",
 					"path": [
 						"players",
 						"captain"
@@ -124,7 +122,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:3000/players/vicecaptain",
+			"name": "/players/vicecaptain",
 			"event": [
 				{
 					"listen": "test",
@@ -156,11 +154,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/players/vicecaptain",
+					"raw": "{{API_URI}}/players/vicecaptain",
 					"host": [
-						"localhost"
+						"{{API_URI}}"
 					],
-					"port": "3000",
 					"path": [
 						"players",
 						"vicecaptain"
@@ -168,6 +165,196 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/players/loan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain results array', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"});\r",
+							"\r",
+							"pm.test('Results should contain expected data', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    const results = res.data;\r",
+							"\r",
+							"    results.forEach(result => {\r",
+							"        pm.expect(!!result.on_loan_from || !!result.on_loan_to).to.be.true;\r",
+							"    });\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URI}}/players/loan",
+					"host": [
+						"{{API_URI}}"
+					],
+					"path": [
+						"players",
+						"loan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/players/loan/in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain results array', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"});\r",
+							"\r",
+							"pm.test('Results should contain expected data', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    const results = res.data;\r",
+							"\r",
+							"    results.forEach(result => {\r",
+							"        pm.expect(!!result.on_loan_from).to.be.true;\r",
+							"        pm.expect(result.on_loan_from).to.be.a('string');\r",
+							"    });\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URI}}/players/loan/in",
+					"host": [
+						"{{API_URI}}"
+					],
+					"path": [
+						"players",
+						"loan",
+						"in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/players/loan/out",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain expected metadata', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('metadata');\r",
+							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+							"});\r",
+							"\r",
+							"pm.test('Response should contain results array', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    pm.expect(res).haveOwnProperty('data');\r",
+							"    pm.expect(res.data).to.be.an('Array');\r",
+							"});\r",
+							"\r",
+							"pm.test('Results should contain expected data', () => {\r",
+							"    const res = pm.response.json();\r",
+							"    const results = res.data;\r",
+							"\r",
+							"    results.forEach(result => {\r",
+							"        pm.expect(!!result.on_loan_to).to.be.true;\r",
+							"        pm.expect(result.on_loan_to).to.be.a('string');\r",
+							"    });\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URI}}/players/loan/out",
+					"host": [
+						"{{API_URI}}"
+					],
+					"path": [
+						"players",
+						"loan",
+						"out"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URI",
+			"value": "https://football-club-api.vercel.app",
+			"type": "string"
 		}
 	]
 }

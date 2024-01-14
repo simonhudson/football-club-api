@@ -15,6 +15,7 @@ const makeRequest = async (res, query = {}) => {
 };
 
 router.get('/', async (_req, res) => makeRequest(res));
+router.get('/:slug', async (req, res) => makeRequest(res, { slug: req.params.slug }));
 router.get('/captain', async (_req, res) => makeRequest(res, { is_captain: true }));
 router.get('/vicecaptain', async (_req, res) => makeRequest(res, { is_vice_captain: true }));
 router.get('/loan', async (_req, res) =>

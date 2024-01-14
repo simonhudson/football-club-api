@@ -1,5 +1,5 @@
-import express from 'express';
-import players from './routes/players';
+const express = require('express');
+const players = require('./routes/players');
 
 const app = express();
 app.use(express.json());

@@ -41,6 +41,17 @@ definitions:
                 type: string
             on_loan_to:
                 type: string
+    PlayersResponse:
+        type: object
+        properties:
+            status:
+                $ref: '#/definitions/Status'
+            metadata:
+                $ref: '#/definitions/Metadata'
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/Player'
 paths:
     /players:
         get:
@@ -52,12 +63,70 @@ paths:
                     description: Array of players.
         schema:
             type: object
-            properties:
-                status:
-                    $ref: '#/definitions/Status'
-                metadata:
-                    $ref: '#/definitions/Metadata'
-                data:
-                    type: array
-                    items:
-                        $ref: '#/definitions/Player'
+            $ref: '#/definitions/PlayersResponse'
+    /players/{slug}:
+        get:
+            summary: Returns single player by slug
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players with single item
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'
+    /players/captain:
+        get:
+            summary: Returns current Team Captain
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players with single item where is_captain is true
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'
+    /players/vicecaptain:
+        get:
+            summary: Returns current Team Vice-Captain
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players with single item where is_vice_captain is true
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'
+    /players/loan:
+        get:
+            summary: Returns all loan players
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players where they are either loaned into or out of the club
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'
+    /players/loan/in:
+        get:
+            summary: Returns all loan players
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players loaned into the club from other clubs
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'
+    /players/loan/out:
+        get:
+            summary: Returns all loan players
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players loaned out of the club to other clubs
+        schema:
+            type: object
+            $ref: '#/definitions/PlayersResponse'

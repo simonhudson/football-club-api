@@ -8,6 +8,13 @@ basePath: /
 schemes:
     - https
 definitions:
+    Status:
+        type: integer
+    Metadata:
+        type: object
+        properties:
+            count:
+                type: integer
     Player:
         properties:
             _id:
@@ -37,7 +44,7 @@ definitions:
 paths:
     /players:
         get:
-            summary: returns all players, ordered by last_name in ascending order
+            summary: Returns all players, ordered by last_name in ascending order
             produces:
                 - application/json
             responses:
@@ -47,14 +54,9 @@ paths:
             type: object
             properties:
                 status:
-                    type: integer
-                    example: 4
+                    $ref: '#/definitions/Status'
                 metadata:
-                    type: object
-                    properties:
-                        count:
-                            type: integer
-                            example: 4
+                    $ref: '#/definitions/Metadata'
                 data:
                     type: array
                     items:

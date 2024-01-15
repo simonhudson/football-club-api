@@ -15,5 +15,7 @@ export const sendResponsePayload = (response: WithId<any>[], res: Response) => {
 		data: response,
 	};
 
+	res.setHeader('Access-Control-Allow-Origin', '*');
+
 	res.json(responsePayload);
 };

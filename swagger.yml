@@ -61,26 +61,26 @@ paths:
             responses:
                 200:
                     description: Array of players.
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'
     /players/{slug}:
         get:
-            summary: Returns single player by slug
+            summary: Returns single player by slug (e.g. firstName-lastName)
             produces:
                 - application/json
-            parameters:
-                - name: slug
-                  in: path
-                  required: true
-                  type: string
-        type: string
             responses:
                 200:
                     description: Array of players with single item
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                    $ref: '#/definitions/PlayersResponse'
+            parameter:
+                - name: slug
+                  in: path
+                  description: slug (e.g. firstName-lastName).
+                  required: true
+                  schema:
+                      type: string
+
     /players/captain:
         get:
             summary: Returns current Team Captain
@@ -89,9 +89,8 @@ paths:
             responses:
                 200:
                     description: Array of players with single item where is_captain is true
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'
     /players/vicecaptain:
         get:
             summary: Returns current Team Vice-Captain
@@ -100,9 +99,8 @@ paths:
             responses:
                 200:
                     description: Array of players with single item where is_vice_captain is true
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'
     /players/loan:
         get:
             summary: Returns all loan players
@@ -111,9 +109,8 @@ paths:
             responses:
                 200:
                     description: Array of players where they are either loaned into or out of the club
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'
     /players/loan/in:
         get:
             summary: Returns all loan players
@@ -122,9 +119,8 @@ paths:
             responses:
                 200:
                     description: Array of players loaned into the club from other clubs
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'
     /players/loan/out:
         get:
             summary: Returns all loan players
@@ -133,6 +129,5 @@ paths:
             responses:
                 200:
                     description: Array of players loaned out of the club to other clubs
-        schema:
-            type: object
-            $ref: '#/definitions/PlayersResponse'
+                    schema:
+                        $ref: '#/definitions/PlayersResponse'

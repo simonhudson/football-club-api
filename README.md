@@ -8,7 +8,7 @@
 
 ## Swagger documentation
 
-https://simonhudson.github.io/football-club-api
+https://simonhudson.github.io/football-club-api/swagger
 
 ## Postman collection
 

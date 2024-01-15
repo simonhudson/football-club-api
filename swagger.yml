@@ -66,6 +66,12 @@ paths:
     /players/{slug}:
         get:
             summary: Returns single player by slug (e.g. firstName-lastName)
+            parameters:
+                - name: slug
+                  in: path
+                  description: Slug of the player's name (e.g. firstName-lastName)
+                  required: true
+                  type: string
             produces:
                 - application/json
             responses:
@@ -73,13 +79,6 @@ paths:
                     description: Array of players with single item
                     schema:
                     $ref: '#/definitions/PlayersResponse'
-            parameter:
-                - name: slug
-                  in: path
-                  description: slug (e.g. firstName-lastName).
-                  required: true
-                  schema:
-                      type: string
 
     /players/captain:
         get:

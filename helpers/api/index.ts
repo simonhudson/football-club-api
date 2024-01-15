@@ -14,7 +14,6 @@ export const sendResponsePayload = (response: WithId<any>[], res: Response) => {
 		metadata: { count: response.length },
 		data: response,
 	};
-	// res.setHeader('Content-Type', 'application/json');
-	// res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+
 	res.json(responsePayload);
 };

@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+    title: Football Club API
+    description: Football Club API
+    version: 1.0.0
+host: football-club-api.vercel.app
+basePath: /
+schemes:
+    - https
+definitions:
+    Player:
+        properties:
+            _id:
+                type: string
+            first_name:
+                type: string
+            last_name:
+                type: string
+            date_of_birth:
+                type: string
+            squad_number:
+                type: integer
+            position:
+                type: string
+            nationality:
+                type: string
+            slug:
+                type: string
+            is_captain:
+                type: boolean
+            is_vice_captain:
+                type: boolean
+            on_loan_from:
+                type: string
+            on_loan_to:
+                type: string
+paths:
+    /players:
+        get:
+            summary: returns all players, ordered by last_name in ascending order
+            produces:
+                - application/json
+            responses:
+                200:
+                    description: Array of players.
+        schema:
+            type: object
+            properties:
+                status:
+                    type: integer
+                    example: 4
+                metadata:
+                    type: object
+                    properties:
+                        count:
+                            type: integer
+                            example: 4
+                data:
+                    type: array
+                    items:
+                        $ref: '#/definitions/Player'

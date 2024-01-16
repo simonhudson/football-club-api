@@ -7,11 +7,12 @@ import { slugify } from '../../helpers/slugify';
 import mongoClient from '../../mongoClient';
 import type { Player } from '../../types/player';
 
-export const put = async (req: Request, res: Response) => {
+export const patch = async (req: Request, res: Response) => {
 	const requestBody = req.body as Player;
 	const query = { _id: new ObjectId(requestBody._id) };
 
 	const newValues: Player = {
+		_id: new ObjectId(requestBody._id),
 		first_name: requestBody.first_name,
 		is_captain: requestBody.is_captain,
 		is_vice_captain: requestBody.is_vice_captain,

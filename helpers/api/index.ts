@@ -1,6 +1,6 @@
 import { httpStatusCodes } from '../../constants/httpStatusCodes';
 import { Response } from 'express';
-import { InsertOneResult, UpdateResult, WithId } from 'mongodb';
+import { DeleteResult, InsertOneResult, UpdateResult, WithId } from 'mongodb';
 
 interface ResponsePayload {
 	status: number;
@@ -9,7 +9,7 @@ interface ResponsePayload {
 }
 
 export const sendResponsePayload = (
-	response: WithId<any>[] | InsertOneResult<Document> | UpdateResult<Document>,
+	response: WithId<any>[] | InsertOneResult<Document> | UpdateResult<Document> | DeleteResult,
 	res: Response
 ) => {
 	const responsePayload: ResponsePayload = {

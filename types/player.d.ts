@@ -6,6 +6,6 @@ export interface Player extends Person {
 	is_vice_captain?: boolean;
 	on_loan_from?: string;
 	on_loan_to?: string;
-	position?: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
+	position: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward' | undefined;
 	squad_number?: number;
 }

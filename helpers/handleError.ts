@@ -8,8 +8,16 @@ interface ErrorObject {
 	info?: any;
 }
 
+interface ErrorResponse extends ErrorObject {
+	status: number;
+}
+
 const badRequest = (res: Response, errorObj: ErrorObject) => {
-	return res.status(httpStatusCodes.BAD_REQUEST).json({ status: httpStatusCodes.BAD_REQUEST, ...errorObj });
+	const errorResponse: ErrorResponse = {
+		status: httpStatusCodes.BAD_REQUEST,
+		...errorObj,
+	};
+	return res.status(httpStatusCodes.BAD_REQUEST).json(errorResponse);
 };
 
 export const handleError = {

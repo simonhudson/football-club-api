@@ -1,7 +1,7 @@
 import { COLLECTION_NAME } from './constants';
 import { handleError } from '../../helpers/handleError';
 import { OptionalId } from 'mongodb';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { sanitizeString } from '../../helpers/sanitizeString';
 import { sendResponsePayload } from '../../helpers/api';
 import { slugify } from '../../helpers/slugify';
@@ -42,7 +42,7 @@ export const post = async (req: Request, res: Response) => {
 	const client = mongoClient;
 	const db = client.db(process.env.DB_NAME);
 
-	const existingRecords = await db
+	const existingName = await db
 		.collection(COLLECTION_NAME)
 		.find({
 			slug: payload.slug,
@@ -52,13 +52,77 @@ export const post = async (req: Request, res: Response) => {
 		})
 		.toArray();
 
-	if (existingRecords.length > 0)
+	const existingSquadNumber = await db
+		.collection(COLLECTION_NAME)
+		.find({
+			squad_number: payload.squad_number,
+		})
+		.toArray();
+
+	const existingCaptain = await db
+		.collection(COLLECTION_NAME)
+		.find({
+			is_captain: true,
+		})
+		.toArray();
+
+	const existingViceCaptain = await db
+		.collection(COLLECTION_NAME)
+		.find({
+			is_vice_captain: true,
+		})
+		.toArray();
+
+	if (
+		!!existingName.length ||
+		!!existingSquadNumber.length ||
+		!!existingCaptain.length ||
+		!!existingViceCaptain.length
+	) {
+		interface ErrorDetails {
+			message: string;
+			info?: any;
+		}
+
+		const getErrorDetails = () => {
+			if (existingName.length) {
+				return {
+					message: `Player '${payload.first_name} ${payload.last_name}' with squad number ${payload.squad_number} already exists`,
+					info: existingName,
+				};
+			}
+			if (existingSquadNumber.length) {
+				return {
+					message: `Squad number ${payload.squad_number} already in use`,
+					info: existingSquadNumber,
+				};
+			}
+			if (payload.is_captain && existingCaptain.length) {
+				return {
+					message: `Captain already exists`,
+					info: existingCaptain,
+				};
+			}
+			if (payload.is_vice_captain && existingViceCaptain.length) {
+				return {
+					message: `Vice captain already exists`,
+					info: existingViceCaptain,
+				};
+			}
+			return {
+				message: 'Unknown error',
+			};
+		};
+
+		const errorDetails: ErrorDetails = getErrorDetails();
+
 		return handleError.badRequest(res, {
 			collection: COLLECTION_NAME,
 			method: 'POST',
-			message: `Existing record(s) found`,
-			info: existingRecords,
+			message: errorDetails.message,
+			info: errorDetails.info,
 		});
+	}
 
 	const response = await db.collection(COLLECTION_NAME).insertOne(payload as OptionalId<Document>);
 	sendResponsePayload(response, res);

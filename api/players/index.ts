@@ -3,6 +3,7 @@ const router = express.Router();
 
 import { get } from './get';
 import { post } from './post';
+import { put } from './put';
 
 const makeRequest = async (req: Request, res: Response, query = {}) => {
 	const METHOD = req.method?.toLowerCase();
@@ -14,9 +15,9 @@ const makeRequest = async (req: Request, res: Response, query = {}) => {
 		case 'post':
 			await post(req, res);
 			break;
-		// case 'put':
-		// 	await doPut();
-		// 	break;
+		case 'put':
+			await put(req, res);
+			break;
 		// case 'delete':
 		// 	await doDelete();
 		// 	break;

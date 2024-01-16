@@ -77,6 +77,56 @@
 			"response": []
 		},
 		{
+			"name": "/players",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const assertCommonResponse = (res) => {\r",
+							"    pm.expect(res.status).to.equal(400);\r",
+							"    pm.expect(res.collection).to.equal('players');\r",
+							"    pm.expect(res.method).to.equal('POST');\r",
+							"    pm.expect(res.message).to.be.a('string');\r",
+							"    pm.expect(res.info).to.be.an('array');\r",
+							"\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
+							"    const res = pm.response.json();\r",
+							"    assertCommonResponse(res);\r",
+							"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"first_name\": \"James\",\r\n    \"last_name\": \"Collins\",\r\n    \"date_of_birth\": \"1990-12-01\",\r\n    \"squad_number\": 9,\r\n    \"position\": \"Forward\",\r\n    \"nationality\": \"Republic of Ireland\",\r\n    \"slug\": \"james-collins\",\r\n    \"is_captain\": false,\r\n    \"is_vice_captain\": false,\r\n    \"on_loan_from\": null,\r\n    \"on_loan_to\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URI}}/players",
+					"host": [
+						"{{API_URI}}"
+					],
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/players/:slug",
 			"event": [
 				{

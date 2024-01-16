@@ -8,123 +8,228 @@
 	"item": [
 		{
 			"name": "/players",
-			"event": [
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain results array', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"    pm.expect(res.data.length > 1).to.be.true;\r",
-							"});\r",
-							"\r",
-							"pm.test('Results should contain expected data', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    const firstItem = res.data[0];\r",
-							"\r",
-							"    const properties = [\r",
-							"        { key: '_id', type: 'string' },\r",
-							"        { key: 'first_name', type: 'string' },\r",
-							"        { key: 'last_name', type: 'string' },\r",
-							"        { key: 'date_of_birth', type: 'string' },\r",
-							"        { key: 'squad_number', type: 'number' },\r",
-							"        { key: 'position', type: 'string' },\r",
-							"        { key: 'nationality', type: 'string' },\r",
-							"        { key: 'slug', type: 'string' },\r",
-							"        { key: 'is_captain', type: 'boolean' },\r",
-							"        { key: 'is_vice_captain', type: 'boolean' },\r",
-							"        { key: 'on_loan_from', type: 'string' },\r",
-							"        { key: 'on_loan_to', type: 'string' }\r",
-							"    ]\r",
-							"\r",
-							"    properties.forEach(property => {\r",
-							"        pm.expect(firstItem).haveOwnProperty(property.key);\r",
-							"        const value = firstItem[property.key];\r",
-							"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
-							"    });\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players",
-					"host": [
-						"{{API_URI}}"
-					],
-					"path": [
-						"players"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const assertCommonResponse = (res) => {\r",
-							"    pm.expect(res.status).to.equal(400);\r",
-							"    pm.expect(res.collection).to.equal('players');\r",
-							"    pm.expect(res.method).to.equal('POST');\r",
-							"    pm.expect(res.message).to.be.a('string');\r",
-							"    pm.expect(res.info).to.be.an('array');\r",
-							"\r",
-							"}\r",
-							"\r",
-							"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
-							"    const res = pm.response.json();\r",
-							"    assertCommonResponse(res);\r",
-							"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"first_name\": \"James\",\r\n    \"last_name\": \"Collins\",\r\n    \"date_of_birth\": \"1990-12-01\",\r\n    \"squad_number\": 9,\r\n    \"position\": \"Forward\",\r\n    \"nationality\": \"Republic of Ireland\",\r\n    \"slug\": \"james-collins\",\r\n    \"is_captain\": false,\r\n    \"is_vice_captain\": false,\r\n    \"on_loan_from\": null,\r\n    \"on_loan_to\": null\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "/players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length > 1).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test('Results should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const firstItem = res.data[0];\r",
+									"\r",
+									"    const properties = [\r",
+									"        { key: '_id', type: 'string' },\r",
+									"        { key: 'first_name', type: 'string' },\r",
+									"        { key: 'last_name', type: 'string' },\r",
+									"        { key: 'date_of_birth', type: 'string' },\r",
+									"        { key: 'squad_number', type: 'number' },\r",
+									"        { key: 'position', type: 'string' },\r",
+									"        { key: 'nationality', type: 'string' },\r",
+									"        { key: 'slug', type: 'string' },\r",
+									"        { key: 'is_captain', type: 'boolean' },\r",
+									"        { key: 'is_vice_captain', type: 'boolean' },\r",
+									"        { key: 'on_loan_from', type: 'string' },\r",
+									"        { key: 'on_loan_to', type: 'string' }\r",
+									"    ]\r",
+									"\r",
+									"    properties.forEach(property => {\r",
+									"        pm.expect(firstItem).haveOwnProperty(property.key);\r",
+									"        const value = firstItem[property.key];\r",
+									"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{API_URI}}/players",
-					"host": [
-						"{{API_URI}}"
 					],
-					"path": [
-						"players"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const assertCommonResponse = (res) => {\r",
+									"    pm.expect(res.status).to.equal(400);\r",
+									"    pm.expect(res.collection).to.equal('players');\r",
+									"    pm.expect(res.method).to.equal('POST');\r",
+									"    pm.expect(res.message).to.be.a('string');\r",
+									"    pm.expect(res.info).to.be.an('array');\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
+									"    const res = pm.response.json();\r",
+									"    assertCommonResponse(res);\r",
+									"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"James\",\r\n    \"last_name\": \"Collins\",\r\n    \"date_of_birth\": \"1990-12-01\",\r\n    \"squad_number\": 9,\r\n    \"position\": \"Forward\",\r\n    \"nationality\": \"Republic of Ireland\",\r\n    \"slug\": \"james-collins\",\r\n    \"is_captain\": false,\r\n    \"is_vice_captain\": false,\r\n    \"on_loan_from\": null,\r\n    \"on_loan_to\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URI}}/players",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const assertCommonResponse = (res) => {\r",
+									"    pm.expect(res.status).to.equal(400);\r",
+									"    pm.expect(res.collection).to.equal('players');\r",
+									"    pm.expect(res.method).to.equal('POST');\r",
+									"    pm.expect(res.message).to.be.a('string');\r",
+									"    pm.expect(res.info).to.be.an('array');\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
+									"    const res = pm.response.json();\r",
+									"    assertCommonResponse(res);\r",
+									"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first_name\": \"James\",\r\n    \"last_name\": \"Collins\",\r\n    \"date_of_birth\": \"1990-12-01\",\r\n    \"squad_number\": 9,\r\n    \"position\": \"Forward\",\r\n    \"nationality\": \"Republic of Ireland\",\r\n    \"slug\": \"james-collins\",\r\n    \"is_captain\": false,\r\n    \"is_vice_captain\": false,\r\n    \"on_loan_from\": null,\r\n    \"on_loan_to\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URI}}/players",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const assertCommonResponse = (res) => {\r",
+									"    pm.expect(res.status).to.equal(400);\r",
+									"    pm.expect(res.collection).to.equal('players');\r",
+									"    pm.expect(res.method).to.equal('POST');\r",
+									"    pm.expect(res.message).to.be.a('string');\r",
+									"    pm.expect(res.info).to.be.an('array');\r",
+									"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
+									"    const res = pm.response.json();\r",
+									"    assertCommonResponse(res);\r",
+									"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URI}}/players",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
 			"name": "/players/:slug",

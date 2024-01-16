@@ -1,21 +1,24 @@
 import { httpStatusCodes } from '../../constants/httpStatusCodes';
 import { Response } from 'express';
-import { WithId } from 'mongodb';
+import { InsertOneResult, UpdateResult, WithId } from 'mongodb';
 
-export const sendResponsePayload = (response: WithId<any>[], res: Response) => {
-	interface ResponsePayload {
-		status: number;
-		metadata: { count: number };
-		data: WithId<any>[];
-	}
+interface ResponsePayload {
+	status: number;
+	data: any;
+	metadata?: { count: number };
+}
 
+export const sendResponsePayload = (
+	response: WithId<any>[] | InsertOneResult<Document> | UpdateResult<Document>,
+	res: Response
+) => {
 	const responsePayload: ResponsePayload = {
 		status: httpStatusCodes.OK,
-		metadata: { count: response.length },
 		data: response,
 	};
 
-	res.setHeader('Access-Control-Allow-Origin', '*');
+	if (Array.isArray(response) && response.length > 0) responsePayload.metadata = { count: response.length };
 
+	res.setHeader('Access-Control-Allow-Origin', '*');
 	res.json(responsePayload);
 };

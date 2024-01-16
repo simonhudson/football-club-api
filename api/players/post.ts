@@ -1,44 +1,65 @@
-import { httpStatusCodes } from '../../constants/httpStatusCodes';
 import { COLLECTION_NAME } from './constants';
+import { handleError } from '../../helpers/handleError';
+import { OptionalId } from 'mongodb';
 import { Response } from 'express';
 import { sanitizeString } from '../../helpers/sanitizeString';
 import { sendResponsePayload } from '../../helpers/api';
 import { slugify } from '../../helpers/slugify';
+import dayjs from 'dayjs';
 import mongoClient from '../../mongoClient';
+import type { Player } from '../../types/player';
 
 export const post = async (req: Request, res: Response) => {
-	if (!req.body) return res.status(httpStatusCodes.BAD_REQUEST).json({ message: 'No body found' });
+	const requestBody = req.body as Player;
 
-	const payload = {
-		first_name: req.body.first_name,
-		is_captain: req.body.is_captain,
-		is_vice_captain: req.body.is_vice_captain,
-		last_name: req.body.last_name,
-		nationality: req.body.nationality,
-		on_loan_from: req.body.on_loan_from,
-		on_loan_to: req.body.on_loan_to,
-		position: req.body.position,
-		slug: slugify(`${req.body.first_name} ${req.body.last_name}`),
-		squad_number: req.body.squad_number,
+	if (!Object.keys(requestBody).length)
+		return handleError.badRequest(res, {
+			collection: COLLECTION_NAME,
+			method: 'POST',
+			message: `No request body found`,
+		});
+
+	const payload: Player = {
+		age: dayjs().diff(dayjs(requestBody.date_of_birth), 'year'),
+		date_of_birth: requestBody.date_of_birth,
+		first_name: requestBody.first_name,
+		is_captain: requestBody.is_captain,
+		is_vice_captain: requestBody.is_vice_captain,
+		last_name: requestBody.last_name,
+		nationality: requestBody.nationality,
+		on_loan_from: requestBody.on_loan_from,
+		on_loan_to: requestBody.on_loan_to,
+		position: requestBody.position,
+		slug: slugify(`${requestBody.first_name} ${requestBody.last_name}`),
+		squad_number: requestBody.squad_number,
 	};
 
 	for (let key in payload) {
-		if (typeof payload[key] === 'string') payload[key] = sanitizeString(payload[key]);
+		if (typeof payload[key as keyof Player] === 'string')
+			payload[key as keyof Player] = sanitizeString(payload[key as keyof Player]);
 	}
 
 	const client = mongoClient;
 	const db = client.db(process.env.DB_NAME);
 
-	const existingRecords = await db.collection(COLLECTION_NAME).find(payload).toArray();
+	const existingRecords = await db
+		.collection(COLLECTION_NAME)
+		.find({
+			slug: payload.slug,
+			first_name: payload.first_name,
+			last_name: payload.last_name,
+			squad_number: payload.squad_number,
+		})
+		.toArray();
 
 	if (existingRecords.length > 0)
-		return res.status(httpStatusCodes.BAD_REQUEST).json({
+		return handleError.badRequest(res, {
 			collection: COLLECTION_NAME,
 			method: 'POST',
 			message: `Existing record(s) found`,
-			existingRecords,
+			info: existingRecords,
 		});
 
-	const response = await db.collection(COLLECTION_NAME).insertOne(payload);
+	const response = await db.collection(COLLECTION_NAME).insertOne(payload as OptionalId<Document>);
 	sendResponsePayload(response, res);
 };

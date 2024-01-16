@@ -1,15 +1,8 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
-import mongoClient from '../../mongoClient';
-import { sendResponsePayload } from '../../helpers/api';
-import { mutatePerson } from '../../mutate/person';
-import { slugify } from '../../helpers/slugify';
-import { sanitizeString } from '../../helpers/sanitizeString';
 
 import { get } from './get';
 import { post } from './post';
-
-const COLLECTION_NAME = 'players';
 
 const makeRequest = async (req: Request, res: Response, query = {}) => {
 	const METHOD = req.method?.toLowerCase();
@@ -28,11 +21,6 @@ const makeRequest = async (req: Request, res: Response, query = {}) => {
 		// 	await doDelete();
 		// 	break;
 	}
-	// const client = mongoClient;
-	// const db = client.db(process.env.DB_NAME);
-	// const response = await db.collection(COLLECTION_NAME).find(query).sort({ last_name: 1 }).toArray();
-	// const mutated = mutatePerson(response);
-	// sendResponsePayload(mutated, res);
 };
 
 router.get('/', async (req: Request, res: Response) => makeRequest(req, res));

@@ -6,10 +6,10 @@ import { sanitizeString } from '../../helpers/sanitizeString';
 import { sendResponsePayload } from '../../helpers/api';
 import { slugify } from '../../helpers/slugify';
 import dayjs from 'dayjs';
-import mongoClient from '../../mongoClient';
 import type { Player } from '../../types/player';
+import { Db } from 'mongodb';
 
-export const post = async (req: Request, res: Response) => {
+export const post = async (db: Db, req: Request, res: Response) => {
 	const requestBody = req.body as Player;
 
 	if (!Object.keys(requestBody).length)
@@ -38,9 +38,6 @@ export const post = async (req: Request, res: Response) => {
 		if (typeof payload[key as keyof Player] === 'string')
 			payload[key as keyof Player] = sanitizeString(payload[key as keyof Player]);
 	}
-
-	const client = mongoClient;
-	const db = client.db(process.env.DB_NAME);
 
 	const existingName = await db
 		.collection(COLLECTION_NAME)

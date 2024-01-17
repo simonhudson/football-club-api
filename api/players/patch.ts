@@ -4,10 +4,10 @@ import { Request, Response } from 'express';
 import { sanitizeString } from '../../helpers/sanitizeString';
 import { sendResponsePayload } from '../../helpers/api';
 import { slugify } from '../../helpers/slugify';
-import mongoClient from '../../mongoClient';
 import type { Player } from '../../types/player';
+import { Db } from 'mongodb';
 
-export const patch = async (req: Request, res: Response) => {
+export const patch = async (db: Db, req: Request, res: Response) => {
 	const requestBody = req.body as Player;
 	const query = { _id: new ObjectId(requestBody._id) };
 
@@ -33,8 +33,6 @@ export const patch = async (req: Request, res: Response) => {
 	const payload = {
 		$set: newValues,
 	};
-	const client = mongoClient;
-	const db = client.db(process.env.DB_NAME);
 	const response = await db.collection(COLLECTION_NAME).updateOne(query, payload);
 	sendResponsePayload(response, res);
 };

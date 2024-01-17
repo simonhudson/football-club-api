@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 const router = express.Router();
+import mongoClient from '../mongoClient';
+import { MongoClient } from 'mongodb';
 
 import { get } from './get';
 import { post } from './post';
@@ -8,19 +10,21 @@ import { del } from './delete';
 
 const makeRequest = async (req: Request, res: Response, query = {}) => {
 	const METHOD = req.method?.toLowerCase();
+	const client: MongoClient = mongoClient;
+	const db = client.db(process.env.DB_NAME);
 
 	switch (METHOD) {
 		case 'get':
-			await get(res, query);
+			await get(db, res, query);
 			break;
 		case 'post':
-			await post(req, res);
+			await post(db, req, res);
 			break;
 		case 'patch':
-			await patch(req, res);
+			await patch(db, req, res);
 			break;
 		case 'delete':
-			await del(req, res);
+			await del(db, req, res);
 			break;
 	}
 };

@@ -1,20 +1,12 @@
 import { ObjectId } from 'mongodb';
-import { Request, Response } from 'express';
 import { sanitizeString } from '../helpers/sanitizeString';
 import { sendResponsePayload } from '../helpers/api';
 import { slugify } from '../helpers/slugify';
 import type { Player } from '../types/player';
-import { Db } from 'mongodb';
+import type { RequestMethodParams } from '../types/api';
 
-interface PatchParams {
-	req: Request;
-	res: Response;
-	collectionName: string;
-	db: Db;
-}
-
-export const patch = async ({ req, res, collectionName, db }: PatchParams) => {
-	const requestBody = req.body as Player;
+export const patch = async ({ req, res, collectionName, db }: RequestMethodParams) => {
+	const requestBody = req?.body as Player;
 	const query = { _id: new ObjectId(requestBody._id) };
 
 	const newValues: Player = {

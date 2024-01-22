@@ -1,11 +1,7 @@
-import { Response } from 'express';
 import { sendResponsePayload } from '../helpers/api';
-import { Db } from 'mongodb';
+import type { RequestMethodParams } from '../types/api';
 
-interface GetParams {
-	res: Response;
-	collectionName: string;
-	db: Db;
+interface GetParams extends RequestMethodParams {
 	query?: {};
 	sortBy?: string;
 	sortDirection?: 'asc' | 'desc';

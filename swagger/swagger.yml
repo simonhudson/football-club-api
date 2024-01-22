@@ -52,6 +52,33 @@ definitions:
                 type: array
                 items:
                     $ref: '#/definitions/Player'
+    Staff:
+        properties:
+            _id:
+                type: string
+            first_name:
+                type: string
+            last_name:
+                type: string
+            date_of_birth:
+                type: string
+            role:
+                type: string
+            nationality:
+                type: string
+            slug:
+                type: string
+    StaffResponse:
+        type: object
+        properties:
+            status:
+                $ref: '#/definitions/Status'
+            metadata:
+                $ref: '#/definitions/Metadata'
+            data:
+                type: array
+                items:
+                    $ref: '#/definitions/Staff'
 paths:
     /players:
         get:
@@ -60,9 +87,24 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players.
+                    description: List of players.
                     schema:
                         $ref: '#/definitions/PlayersResponse'
+        post:
+            summary: Create a new player
+            responses:
+                201:
+                    description: The created player
+        patch:
+            summary: Update a player
+            responses:
+                200:
+                    description: The updated player
+        delete:
+            summary: Delete a player
+            responses:
+                204:
+                    description: The player was deleted
     /players/{slug}:
         get:
             summary: Returns single player by slug (e.g. firstName-lastName)
@@ -76,7 +118,7 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players with single item
+                    description: The player by slug
                     schema:
                     $ref: '#/definitions/PlayersResponse'
 
@@ -87,7 +129,7 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players with single item where is_captain is true
+                    description: Current Team Captain
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /players/vicecaptain:
@@ -97,7 +139,7 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players with single item where is_vice_captain is true
+                    description: Current Team Vice Captain
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan:
@@ -107,7 +149,7 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players where they are either loaned into or out of the club
+                    description: List of all players who are either loaned into or out of the club
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan/in:
@@ -117,7 +159,7 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players loaned into the club from other clubs
+                    description: List of players who are loaned into the club from other clubs
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan/out:
@@ -127,6 +169,48 @@ paths:
                 - application/json
             responses:
                 200:
-                    description: Array of players loaned out of the club to other clubs
+                    description: List of players who are loaned out of the club to other clubs
                     schema:
                         $ref: '#/definitions/PlayersResponse'
+    /staff:
+        get:
+            summary: Get all staff
+            responses:
+                200:
+                    description: A list of staff
+                    schema:
+                        $ref: '#/definitions/StaffResponse'
+        post:
+            summary: Create a new staff member
+            responses:
+                201:
+                    description: The created staff member
+                    schema:
+                        $ref: '#/definitions/StaffResponse'
+        patch:
+            summary: Update a staff member
+            responses:
+                200:
+                    description: The updated staff member
+                    schema:
+                        $ref: '#/definitions/StaffResponse'
+        delete:
+            summary: Delete a staff member
+            responses:
+                204:
+                    description: The staff member was deleted
+                    schema:
+                        $ref: '#/definitions/StaffResponse'
+    /staff/{slug}:
+        get:
+            summary: Get a staff member by slug
+            parameters:
+                - in: path
+                  name: slug
+                  required: true
+                  type: string
+            responses:
+                200:
+                    description: The staff member
+                    schema:
+                        $ref: '#/definitions/StaffResponse'

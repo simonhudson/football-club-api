@@ -81,9 +81,9 @@ definitions:
                     $ref: '#/definitions/Staff'
 paths:
     /players:
-        tags:
-            - Players
         get:
+            tags:
+                - Players
             summary: Returns all players, ordered by last_name in ascending order
             produces:
                 - application/json
@@ -93,22 +93,30 @@ paths:
                     schema:
                         $ref: '#/definitions/PlayersResponse'
         post:
+            tags:
+                - Players
             summary: Create a new player
             responses:
                 201:
                     description: The created player
         patch:
+            tags:
+                - Players
             summary: Update a player
             responses:
                 200:
                     description: The updated player
         delete:
+            tags:
+                - Players
             summary: Delete a player
             responses:
                 204:
                     description: The player was deleted
     /players/{slug}:
         get:
+            tags:
+                - Players
             summary: Returns single player by slug (e.g. firstName-lastName)
             parameters:
                 - name: slug
@@ -123,9 +131,10 @@ paths:
                     description: The player by slug
                     schema:
                     $ref: '#/definitions/PlayersResponse'
-
     /players/captain:
         get:
+            tags:
+                - Players
             summary: Returns current Team Captain
             produces:
                 - application/json
@@ -136,6 +145,8 @@ paths:
                         $ref: '#/definitions/PlayersResponse'
     /players/vicecaptain:
         get:
+            tags:
+                - Players
             summary: Returns current Team Vice-Captain
             produces:
                 - application/json
@@ -146,6 +157,8 @@ paths:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan:
         get:
+            tags:
+                - Players
             summary: Returns all loan players
             produces:
                 - application/json
@@ -156,6 +169,8 @@ paths:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan/in:
         get:
+            tags:
+                - Players
             summary: Returns all loan players
             produces:
                 - application/json
@@ -166,6 +181,8 @@ paths:
                         $ref: '#/definitions/PlayersResponse'
     /players/loan/out:
         get:
+            tags:
+                - Players
             summary: Returns all loan players
             produces:
                 - application/json
@@ -175,9 +192,9 @@ paths:
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /staff:
-        tags:
-            - Staff
         get:
+            tags:
+                - Staff
             summary: Get all staff
             responses:
                 200:
@@ -185,6 +202,8 @@ paths:
                     schema:
                         $ref: '#/definitions/StaffResponse'
         post:
+            tags:
+                - Staff
             summary: Create a new staff member
             responses:
                 201:
@@ -192,6 +211,8 @@ paths:
                     schema:
                         $ref: '#/definitions/StaffResponse'
         patch:
+            tags:
+                - Staff
             summary: Update a staff member
             responses:
                 200:
@@ -199,6 +220,8 @@ paths:
                     schema:
                         $ref: '#/definitions/StaffResponse'
         delete:
+            tags:
+                - Staff
             summary: Delete a staff member
             responses:
                 204:
@@ -207,6 +230,8 @@ paths:
                         $ref: '#/definitions/StaffResponse'
     /staff/{slug}:
         get:
+            tags:
+                - Staff
             summary: Get a staff member by slug
             parameters:
                 - in: path

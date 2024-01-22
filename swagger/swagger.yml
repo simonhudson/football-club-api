@@ -81,6 +81,8 @@ definitions:
                     $ref: '#/definitions/Staff'
 paths:
     /players:
+        tags:
+            - Players
         get:
             summary: Returns all players, ordered by last_name in ascending order
             produces:
@@ -173,6 +175,8 @@ paths:
                     schema:
                         $ref: '#/definitions/PlayersResponse'
     /staff:
+        tags:
+            - Staff
         get:
             summary: Get all staff
             responses:

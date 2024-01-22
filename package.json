@@ -19,7 +19,9 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.8",
+    "@babel/preset-typescript": "^7.23.3",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.11",
     "babel-jest": "^29.7.0",

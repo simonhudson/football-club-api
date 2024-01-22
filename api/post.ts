@@ -1,20 +1,26 @@
-import { COLLECTION_NAME } from './constants';
-import { handleError } from '../../helpers/handleError';
+import { handleError } from '../helpers/handleError';
 import { OptionalId } from 'mongodb';
 import { Request, Response } from 'express';
-import { sanitizeString } from '../../helpers/sanitizeString';
-import { sendResponsePayload } from '../../helpers/api';
-import { slugify } from '../../helpers/slugify';
+import { sanitizeString } from '../helpers/sanitizeString';
+import { sendResponsePayload } from '../helpers/api';
+import { slugify } from '../helpers/slugify';
 import dayjs from 'dayjs';
-import type { Player } from '../../types/player';
+import type { Player } from '../types/player';
 import { Db } from 'mongodb';
 
-export const post = async (db: Db, req: Request, res: Response) => {
+interface PostParams {
+	req: Request;
+	res: Response;
+	collectionName: string;
+	db: Db;
+}
+
+export const post = async ({ req, res, collectionName, db }: PostParams) => {
 	const requestBody = req.body as Player;
 
 	if (!Object.keys(requestBody).length)
 		return handleError.badRequest(res, {
-			collection: COLLECTION_NAME,
+			collection: collectionName,
 			method: 'POST',
 			message: `No request body found`,
 		});
@@ -40,7 +46,7 @@ export const post = async (db: Db, req: Request, res: Response) => {
 	}
 
 	const existingName = await db
-		.collection(COLLECTION_NAME)
+		.collection(collectionName)
 		.find({
 			slug: payload.slug,
 			first_name: payload.first_name,
@@ -50,21 +56,21 @@ export const post = async (db: Db, req: Request, res: Response) => {
 		.toArray();
 
 	const existingSquadNumber = await db
-		.collection(COLLECTION_NAME)
+		.collection(collectionName)
 		.find({
 			squad_number: payload.squad_number,
 		})
 		.toArray();
 
 	const existingCaptain = await db
-		.collection(COLLECTION_NAME)
+		.collection(collectionName)
 		.find({
 			is_captain: true,
 		})
 		.toArray();
 
 	const existingViceCaptain = await db
-		.collection(COLLECTION_NAME)
+		.collection(collectionName)
 		.find({
 			is_vice_captain: true,
 		})
@@ -114,13 +120,13 @@ export const post = async (db: Db, req: Request, res: Response) => {
 		const errorDetails: ErrorDetails = getErrorDetails();
 
 		return handleError.badRequest(res, {
-			collection: COLLECTION_NAME,
+			collection: collectionName,
 			method: 'POST',
 			message: errorDetails.message,
 			info: errorDetails.info,
 		});
 	}
 
-	const response = await db.collection(COLLECTION_NAME).insertOne(payload as OptionalId<Document>);
+	const response = await db.collection(collectionName).insertOne(payload as OptionalId<Document>);
 	sendResponsePayload(response, res);
 };

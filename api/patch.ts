@@ -1,13 +1,19 @@
-import { COLLECTION_NAME } from './constants';
 import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
-import { sanitizeString } from '../../helpers/sanitizeString';
-import { sendResponsePayload } from '../../helpers/api';
-import { slugify } from '../../helpers/slugify';
-import type { Player } from '../../types/player';
+import { sanitizeString } from '../helpers/sanitizeString';
+import { sendResponsePayload } from '../helpers/api';
+import { slugify } from '../helpers/slugify';
+import type { Player } from '../types/player';
 import { Db } from 'mongodb';
 
-export const patch = async (db: Db, req: Request, res: Response) => {
+interface PatchParams {
+	req: Request;
+	res: Response;
+	collectionName: string;
+	db: Db;
+}
+
+export const patch = async ({ req, res, collectionName, db }: PatchParams) => {
 	const requestBody = req.body as Player;
 	const query = { _id: new ObjectId(requestBody._id) };
 
@@ -33,6 +39,6 @@ export const patch = async (db: Db, req: Request, res: Response) => {
 	const payload = {
 		$set: newValues,
 	};
-	const response = await db.collection(COLLECTION_NAME).updateOne(query, payload);
+	const response = await db.collection(collectionName).updateOne(query, payload);
 	sendResponsePayload(response, res);
 };

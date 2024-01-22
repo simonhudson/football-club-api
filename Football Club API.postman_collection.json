@@ -136,20 +136,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const assertCommonResponse = (res) => {\r",
-									"    pm.expect(res.status).to.equal(400);\r",
-									"    pm.expect(res.collection).to.equal('players');\r",
-									"    pm.expect(res.method).to.equal('POST');\r",
-									"    pm.expect(res.message).to.be.a('string');\r",
-									"    pm.expect(res.info).to.be.an('array');\r",
-									"\r",
-									"}\r",
-									"\r",
-									"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
-									"    const res = pm.response.json();\r",
-									"    assertCommonResponse(res);\r",
-									"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -186,20 +173,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const assertCommonResponse = (res) => {\r",
-									"    pm.expect(res.status).to.equal(400);\r",
-									"    pm.expect(res.collection).to.equal('players');\r",
-									"    pm.expect(res.method).to.equal('POST');\r",
-									"    pm.expect(res.message).to.be.a('string');\r",
-									"    pm.expect(res.info).to.be.an('array');\r",
-									"\r",
-									"}\r",
-									"\r",
-									"pm.test(\"Should return an error if record with same Name and Squad Number already exists\", () => {\r",
-									"    const res = pm.response.json();\r",
-									"    assertCommonResponse(res);\r",
-									"    pm.expect(res.message).to.equal(`Player 'James Collins' with squad number 9 already exists`);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -228,334 +202,472 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/players/:slug",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length).to.equal(1);\r",
+									"});\r",
+									"\r",
+									"pm.test('Result should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const result = res.data[0];\r",
+									"\r",
+									"    const properties = [\r",
+									"        { key: '_id', type: 'string' },\r",
+									"        { key: 'first_name', type: 'string' },\r",
+									"        { key: 'last_name', type: 'string' },\r",
+									"        { key: 'date_of_birth', type: 'string' },\r",
+									"        { key: 'squad_number', type: 'number' },\r",
+									"        { key: 'position', type: 'string' },\r",
+									"        { key: 'nationality', type: 'string' },\r",
+									"        { key: 'slug', type: 'string' },\r",
+									"        { key: 'is_captain', type: 'boolean' },\r",
+									"        { key: 'is_vice_captain', type: 'boolean' },\r",
+									"        { key: 'on_loan_from', type: 'string' },\r",
+									"        { key: 'on_loan_to', type: 'string' }\r",
+									"    ]\r",
+									"\r",
+									"    properties.forEach(property => {\r",
+									"        pm.expect(result).haveOwnProperty(property.key);\r",
+									"        const value = result[property.key];\r",
+									"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+									"    });\r",
+									"\r",
+									"    pm.expect(result.slug).to.equal('james-collins');\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/james-collins",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"james-collins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players/captain",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.equal(1);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain one result with is_captain property set to true', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length).to.equal(1);\r",
+									"    pm.expect(res.data[0].is_captain).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/captain",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"captain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players/vicecaptain",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.equal(1);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain one result with is_vice_captain property set to true', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length).to.equal(1);\r",
+									"    pm.expect(res.data[0].is_vice_captain).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/vicecaptain",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"vicecaptain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players/loan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"});\r",
+									"\r",
+									"pm.test('Results should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const results = res.data;\r",
+									"\r",
+									"    results.forEach(result => {\r",
+									"        pm.expect(!!result.on_loan_from || !!result.on_loan_to).to.be.true;\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/loan",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"loan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players/loan/in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"});\r",
+									"\r",
+									"pm.test('Results should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const results = res.data;\r",
+									"\r",
+									"    results.forEach(result => {\r",
+									"        pm.expect(!!result.on_loan_from).to.be.true;\r",
+									"        pm.expect(result.on_loan_from).to.be.a('string');\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/loan/in",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"loan",
+								"in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/players/loan/out",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"});\r",
+									"\r",
+									"pm.test('Results should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const results = res.data;\r",
+									"\r",
+									"    results.forEach(result => {\r",
+									"        pm.expect(!!result.on_loan_to).to.be.true;\r",
+									"        pm.expect(result.on_loan_to).to.be.a('string');\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/players/loan/out",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"players",
+								"loan",
+								"out"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "/players/:slug",
-			"event": [
+			"name": "staff",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain results array', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"    pm.expect(res.data.length).to.equal(1);\r",
-							"});\r",
-							"\r",
-							"pm.test('Result should contain expected data', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    const result = res.data[0];\r",
-							"\r",
-							"    const properties = [\r",
-							"        { key: '_id', type: 'string' },\r",
-							"        { key: 'first_name', type: 'string' },\r",
-							"        { key: 'last_name', type: 'string' },\r",
-							"        { key: 'date_of_birth', type: 'string' },\r",
-							"        { key: 'squad_number', type: 'number' },\r",
-							"        { key: 'position', type: 'string' },\r",
-							"        { key: 'nationality', type: 'string' },\r",
-							"        { key: 'slug', type: 'string' },\r",
-							"        { key: 'is_captain', type: 'boolean' },\r",
-							"        { key: 'is_vice_captain', type: 'boolean' },\r",
-							"        { key: 'on_loan_from', type: 'string' },\r",
-							"        { key: 'on_loan_to', type: 'string' }\r",
-							"    ]\r",
-							"\r",
-							"    properties.forEach(property => {\r",
-							"        pm.expect(result).haveOwnProperty(property.key);\r",
-							"        const value = result[property.key];\r",
-							"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
-							"    });\r",
-							"\r",
-							"    pm.expect(result.slug).to.equal('james-collins');\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/james-collins",
-					"host": [
-						"{{API_URI}}"
+					"name": "/staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length > 1).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test('Results should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const firstItem = res.data[0];\r",
+									"\r",
+									"    const properties = [\r",
+									"        { key: '_id', type: 'string' },\r",
+									"        { key: 'first_name', type: 'string' },\r",
+									"        { key: 'last_name', type: 'string' },\r",
+									"        { key: 'date_of_birth', type: 'string' },\r",
+									"        { key: 'role', type: 'string' },\r",
+									"        { key: 'nationality', type: 'string' },\r",
+									"        { key: 'slug', type: 'string' }\r",
+									"    ]\r",
+									"\r",
+									"    properties.forEach(property => {\r",
+									"        pm.expect(firstItem).haveOwnProperty(property.key);\r",
+									"        const value = firstItem[property.key];\r",
+									"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+									"    });\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"players",
-						"james-collins"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players/captain",
-			"event": [
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/staff",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"staff"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.equal(1);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain one result with is_captain property set to true', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"    pm.expect(res.data.length).to.equal(1);\r",
-							"    pm.expect(res.data[0].is_captain).to.be.true;\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/captain",
-					"host": [
-						"{{API_URI}}"
+					"name": "/staff/:slug",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain expected metadata', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('metadata');\r",
+									"    pm.expect(res.metadata.count).to.be.a('Number');\r",
+									"});\r",
+									"\r",
+									"pm.test('Response should contain results array', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    pm.expect(res).haveOwnProperty('data');\r",
+									"    pm.expect(res.data).to.be.an('Array');\r",
+									"    pm.expect(res.data.length).to.equal(1);\r",
+									"});\r",
+									"\r",
+									"pm.test('Result should contain expected data', () => {\r",
+									"    const res = pm.response.json();\r",
+									"    const result = res.data[0];\r",
+									"\r",
+									"    const properties = [\r",
+									"        { key: '_id', type: 'string' },\r",
+									"        { key: 'first_name', type: 'string' },\r",
+									"        { key: 'last_name', type: 'string' },\r",
+									"        { key: 'date_of_birth', type: 'string' },\r",
+									"        { key: 'role', type: 'string' },\r",
+									"        { key: 'nationality', type: 'string' },\r",
+									"        { key: 'slug', type: 'string' }\r",
+									"    ]\r",
+									"\r",
+									"    properties.forEach(property => {\r",
+									"        pm.expect(result).haveOwnProperty(property.key);\r",
+									"        const value = result[property.key];\r",
+									"        if (value !== null) pm.expect(value).to.be.a(property.type);\r",
+									"    });\r",
+									"\r",
+									"    pm.expect(result.slug).to.equal('paul-warne');\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"players",
-						"captain"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URI}}/staff/paul-warne",
+							"host": [
+								"{{API_URI}}"
+							],
+							"path": [
+								"staff",
+								"paul-warne"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players/vicecaptain",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.equal(1);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain one result with is_vice_captain property set to true', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"    pm.expect(res.data.length).to.equal(1);\r",
-							"    pm.expect(res.data[0].is_vice_captain).to.be.true;\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/vicecaptain",
-					"host": [
-						"{{API_URI}}"
-					],
-					"path": [
-						"players",
-						"vicecaptain"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players/loan",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain results array', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"});\r",
-							"\r",
-							"pm.test('Results should contain expected data', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    const results = res.data;\r",
-							"\r",
-							"    results.forEach(result => {\r",
-							"        pm.expect(!!result.on_loan_from || !!result.on_loan_to).to.be.true;\r",
-							"    });\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/loan",
-					"host": [
-						"{{API_URI}}"
-					],
-					"path": [
-						"players",
-						"loan"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players/loan/in",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain results array', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"});\r",
-							"\r",
-							"pm.test('Results should contain expected data', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    const results = res.data;\r",
-							"\r",
-							"    results.forEach(result => {\r",
-							"        pm.expect(!!result.on_loan_from).to.be.true;\r",
-							"        pm.expect(result.on_loan_from).to.be.a('string');\r",
-							"    });\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/loan/in",
-					"host": [
-						"{{API_URI}}"
-					],
-					"path": [
-						"players",
-						"loan",
-						"in"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/players/loan/out",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", () => {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain expected metadata', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('metadata');\r",
-							"    pm.expect(res.metadata.count).to.be.a('Number');\r",
-							"});\r",
-							"\r",
-							"pm.test('Response should contain results array', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    pm.expect(res).haveOwnProperty('data');\r",
-							"    pm.expect(res.data).to.be.an('Array');\r",
-							"});\r",
-							"\r",
-							"pm.test('Results should contain expected data', () => {\r",
-							"    const res = pm.response.json();\r",
-							"    const results = res.data;\r",
-							"\r",
-							"    results.forEach(result => {\r",
-							"        pm.expect(!!result.on_loan_to).to.be.true;\r",
-							"        pm.expect(result.on_loan_to).to.be.a('string');\r",
-							"    });\r",
-							"\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{API_URI}}/players/loan/out",
-					"host": [
-						"{{API_URI}}"
-					],
-					"path": [
-						"players",
-						"loan",
-						"out"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	],
 	"event": [

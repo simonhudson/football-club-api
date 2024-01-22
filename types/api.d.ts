@@ -1,4 +1,4 @@
-export interface ApiBase {
+export interface ApiResponseBase {
 	status: number;
 	metadata: {
 		count: number;
